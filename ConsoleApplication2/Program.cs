@@ -11,19 +11,29 @@ namespace ConsoleApplication2
     {
         static void Main(string[] args)
         {
-            //Zero-Out Compression by J03L.
+            //Zero-Out Compression by J03L. Version 3.0.0
             Console.WriteLine("Enter the mode (compress OR decompress)");
             string getMode = Console.ReadLine();
-            //string getMode = "c";
+            string getFile = "";
+            string[] dKey = new string[0];
+            //string[] genKey = new string[0];
+            //string getMode = "c"; debug purposes
             if (getMode == "c")
             {
                 Console.WriteLine("Enter the path of the file you want to compress.");
-            }else
+                getFile = Console.ReadLine();
+            }
+            else
             {
                 Console.WriteLine("Enter the path of the file you want to decompress.");
+                getFile = Console.ReadLine();
+                Console.WriteLine("Enter the key that was returned after compression.");
+                String getKey = Console.ReadLine();
+                dKey = getKey.Split('-');
+                //Console.WriteLine(dKey[10);
             }
-            string getFile = Console.ReadLine();
-            //string getFile = @"c:\a\test3_compressed2.txt";
+            
+            //string getFile = @"c:\a\test3_compressed2.txt"; debug purposes
             Console.WriteLine("Enter the path of the file you want to save to.");
             string saveFile = Console.ReadLine();
             FileStream fs = new FileStream(getFile, FileMode.Open);
@@ -32,6 +42,8 @@ namespace ConsoleApplication2
             String hex_2;
             String hex_3;
             String hex_4;
+            String key1 = "";
+            int dStage = 1;
             int hexIn_2;
             int hexIn_3;
             int hexIn_4;
@@ -69,6 +81,7 @@ namespace ConsoleApplication2
                                     fs_2.WriteByte(52);
                                     saveCount1 = saveCount1 + 1;
                                     hex = "00*4";
+                                    key1 = key1 + (fs.Position - 3).ToString()+"-";
 
                                     //fs.Position = fs.Position - 3;
                             }
@@ -129,14 +142,19 @@ namespace ConsoleApplication2
                             hex_3 = string.Format("{0:X2}", hexIn_3);
                             if (hex_3 == "34")
                             {
-                                int intValue = int.Parse(hex, System.Globalization.NumberStyles.HexNumber);
-                                byte newByte3 = (byte)intValue;
-                                fs_2.WriteByte(newByte3);
-                                fs_2.WriteByte(newByte3);
-                                fs_2.WriteByte(newByte3);
-                                fs_2.WriteByte(newByte3);
-                                saveCount1 = saveCount1 + 1;
-                                hex = "00*4";
+                                Console.WriteLine(fs_2.Position);
+                            Console.WriteLine(dKey[dStage]);
+                                if (fs.Position.ToString() == dKey[dStage]) {
+                                    int intValue = int.Parse(hex, System.Globalization.NumberStyles.HexNumber);
+                                    byte newByte3 = (byte)intValue;
+                                    fs_2.WriteByte(newByte3);
+                                    fs_2.WriteByte(newByte3);
+                                    fs_2.WriteByte(newByte3);
+                                    fs_2.WriteByte(newByte3);
+                                    saveCount1 = saveCount1 + 1;
+                                    hex = "00*4";
+                                    dStage = dStage + 1;
+                                }
                             //hexIn_4 = fs.ReadByte();
                             //hex_4 = string.Format("{0:X2}", hexIn_4);
                             //if (hex_4 == "00")
@@ -156,7 +174,7 @@ namespace ConsoleApplication2
                             //{
                             //    fs.Position = fs.Position - 3;
                             //}
-                        }
+                            }
                             else
                             {
                                 fs.Position = fs.Position - 2;
@@ -206,7 +224,11 @@ namespace ConsoleApplication2
 
                 }
             }
-            Console.WriteLine("By compressing this file, ",fs.Length - fs_2.Length," bytes can be saved.");
+            Console.WriteLine("By compressing this file, "+(fs.Length - fs_2.Length).ToString()+" bytes can be saved.");
+            Console.WriteLine("Your key is:");
+            Console.WriteLine();
+            Console.WriteLine(key1);
+            Console.WriteLine();
             Console.WriteLine("Press any key to continue. Do NOT just close the program otherwise the compressed result will NOT be saved to disk!");
             Console.ReadKey();
         }
