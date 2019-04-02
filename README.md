@@ -13,3 +13,6 @@ comes to decompression, the decompressor will see the "*4" as 4 compressed bytes
 
 # Potential fixes
 (1) - When compressing a file, a key should be generated that you give to the decompressor, which tells it where the compressed bytes are, and so, the decompressor makes sure that a "*4" is actually compressed bytes or if it's what the file is supposed to be without compression. This is partially implemented at the time of writing this, but the feature does not work and it still decompresses non-compressed bytes.
+
+# License
+The license can be found at https://github.com/joelastley555/ZeroOutCompression/blob/master/LICENSE
