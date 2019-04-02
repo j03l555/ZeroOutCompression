@@ -9,13 +9,16 @@ namespace ConsoleApplication2
 {
     class Program
     {
+        public static string[] dKey;
+        
         static void Main(string[] args)
         {
-            //Zero-Out Compression by J03L. Version 3.0.0
+            
+            //Zero-Out Compression by J03L. Version 4.0.0
             Console.WriteLine("Enter the mode (compress OR decompress)");
             string getMode = Console.ReadLine();
             string getFile = "";
-            string[] dKey = new string[0];
+            
             //string[] genKey = new string[0];
             //string getMode = "c"; debug purposes
             if (getMode == "c")
